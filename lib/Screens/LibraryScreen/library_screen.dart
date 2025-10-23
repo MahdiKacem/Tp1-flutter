@@ -14,27 +14,31 @@ class LibraryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 33, 107, 235),
-        title: const Text(
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        surfaceTintColor: colorScheme.primary,
+        elevation: 2,
+        title: Text(
           "Store INSAT",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 30,
+          style: textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(8.0),
           child: GridView.builder(
             itemCount: books.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
               childAspectRatio: 0.75,
             ),
             itemBuilder: (context, index) {

@@ -5,27 +5,32 @@ import 'package:tp1/Screens/DetailsScreen/details_screen.dart';
 class HomeCell extends StatelessWidget {
   const HomeCell(this.book, {super.key});
   final Book book;
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => DetailsScreen(book: book)),
-        );
-      },
-      child: Card(
-        child: Container(
-          // increased horizontal padding
-          padding:
-              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Card(
+      elevation: 3, // M3 default elevation
+      shadowColor: colorScheme.shadow,
+      surfaceTintColor: colorScheme.surfaceTint,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(15),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => DetailsScreen(book: book)),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
           child: Row(
-            // put children at start and center them vertically
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
                   book.image,
                   width: 80,
@@ -35,35 +40,27 @@ class HomeCell extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // book name
-                      Text(
-                        book.name,
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      book.name,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurface,
                       ),
-                      const SizedBox(height: 4),
-                      // book price
-                      Text(
-                        "${book.price} TND",
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      textAlign: TextAlign.right,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "${book.price} TND",
+                      style: textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.primary,
                       ),
-                    ],
-                  ),
+                      textAlign: TextAlign.right,
+                    ),
+                  ],
                 ),
               ),
             ],

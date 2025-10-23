@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tp1/Models/book.dart';
 
-/// variable globale partagée entre toutes les instances de DetailsScreen
-int quantity = 10; // valeur initiale — changez si besoin
+int quantity = 10; // variable globale
 
 class DetailsScreen extends StatefulWidget {
   final Book book;
@@ -15,10 +14,15 @@ class DetailsScreen extends StatefulWidget {
 class _DetailsScreenState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.book.name),
-        backgroundColor: const Color.fromARGB(255, 33, 107, 235),
+        backgroundColor: colorScheme.primary, // use Material 3 primary color
+        foregroundColor: colorScheme.onPrimary, // text color
+        surfaceTintColor: colorScheme.primary, // M3 effect
+        elevation: 2,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -49,42 +53,47 @@ class _DetailsScreenState extends State<DetailsScreen> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 "${widget.book.price} TND",
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.primary, // M3 color
+                ),
               ),
             ),
           ),
-
           const SizedBox(height: 8),
-
-          // Afficher la quantité restante (variable globale)
           Center(
             child: Text(
               'Quantity: $quantity',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
             ),
           ),
-
           const SizedBox(height: 12),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.shopping_bag),
-            label: const Text(
-              "Purchase",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          Center(
+            child: FilledButton.icon(
+              icon: const Icon(Icons.shopping_bag),
+              label: const Text(
+                "Purchase",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+              ),
+              onPressed: quantity > 0
+                  ? () {
+                      setState(() {
+                        quantity--;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Purchased: ${widget.book.name}')),
+                      );
+                    }
+                  : null, // disabled if quantity = 0
             ),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-            ),
-            onPressed: quantity > 0
-                ? () {
-                    // décrémenter la variable globale et rebuild l'écran
-                    setState(() {
-                      quantity = quantity - 1;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Purchased: ${widget.book.name}')),
-                    );
-                  }
-                : null, // disabled si quantité = 0
           ),
         ],
       ),
